@@ -1,5 +1,4 @@
 # Set colorscheme
-colorscheme kaleidoscope-dark
 
 # Width of a tab
 set-option global tabstop 4
@@ -29,7 +28,12 @@ add-highlighter global/ wrap -word -indent
 map -docstring "yank the selection into the clipboard" global user y "<a-|> xsel -i<ret>"
 map -docstring "paste the clipboard" global user p "<a-!> xsel<ret>"
 
-# Shortcut to quickly exit the editor
-# ????
+# Shortcut to quickly exit the editor# ????
 #
 map global insert <a-i> <esc>
+
+# Color scheme changes
+# push:<old mode>:<new mode>
+colorscheme tomorrow-night
+hook global ModeChange push:normal:insert "colorscheme gruvbox-dark"
+hook global ModeChange pop:insert:normal "colorscheme tomorrow-night"

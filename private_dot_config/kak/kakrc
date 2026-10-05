@@ -36,9 +36,32 @@ colorscheme ashen
 hook global ModeChange push:normal:insert "colorscheme night-owl"
 hook global ModeChange pop:insert:normal "colorscheme ashen"
 
-# kak-lsp settings
-eval %sh{kak-lsp}
-lsp-enable
+
+
+# =============== LSP CONFIG ==============
+# Add LSP
+eval %sh{kak-lsp --kakoune -s $kak_session}  # Not needed if you load it with plug.kak.
+hook global WinSetOption filetype=rust %{
+    # Enable LSP
+    lsp-enable-window
+
+    # Auto-formatting on save
+    hook window BufWritePre .* lsp-formatting-sync
+
+    # Configure inlay hints (only on save)
+    hook window -group rust-inlay-hints BufWritePost .* rust-analyzer-inlay-hints
+    hook -once -always window WinSetOption filetype=.* %{
+        remove-hooks window rust-inlay-hints
+    }
+}
+
+hook global WinSetOption filetype=c %{
+	lsp-enable-window
+}
+
+hook global WinSetOption filetype=python %{
+	lsp-enable-window
+}
 
 set-option global modelinefmt "%opt{lsp_modeline} %opt{modelinefmt}"
 
